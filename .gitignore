@@ -57,7 +57,10 @@
 
 /observability/*
 !/observability/docker-compose.yml
+!/observability/docker-compose.optiplex.yml
 !/observability/.env.example
 !/observability/README.md
 !/observability/prometheus.yml
 !/observability/grafana-datasource.yml
+!/observability/grafana-dashboards.yml
+!/observability/homelab-overview.json

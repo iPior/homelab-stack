@@ -1,10 +1,9 @@
 # Observability
 
 Grafana comes with Prometheus configured as its default data source. Prometheus
-collects metrics from itself, Grafana, and Node Exporter. Node Exporter reports
-the media server's CPU, memory, filesystem, and network metrics. To monitor
-other services, add their metrics endpoints or exporters to `prometheus.yml`
-and recreate Prometheus.
+collects metrics from itself, Grafana, Node Exporter, and cAdvisor. Node Exporter
+reports host CPU, memory, filesystem, and network metrics. cAdvisor reports
+resource usage for individual Docker containers.
 
 From this directory, copy the environment template and set a unique
 `GRAFANA_ADMIN_PASSWORD` in `.env`.
@@ -42,3 +41,44 @@ Grafana settings and Prometheus metrics persist in named Docker volumes. The
 admin password in `.env` applies when Grafana initializes its database. Change
 the password in Grafana after initialization. Prometheus retains up to 15 days
 of metrics and also applies a 2 GB retention threshold.
+
+## Homelab Overview dashboard
+
+Grafana loads **Homelab Overview** under **Dashboards > Homelab**. The **Host**
+selector filters exporter status, host metrics, and container usage. Hosts
+with only Node Exporter still show host metrics. Container rankings show the
+top ten containers across the selected hosts, using short Docker IDs when
+cAdvisor does not report names.
+
+On an existing installation, apply the dashboard mounts from this directory:
+
+```bash
+sudo docker compose up -d grafana
+```
+
+Edit `homelab-overview.json` to change the provisioned dashboard.
+
+## cAdvisor on the media server and OptiPlex
+
+From this directory on the media server, start cAdvisor and recreate Prometheus
+to load the scrape jobs.
+
+```bash
+sudo docker compose up -d cadvisor
+sudo docker compose up -d --force-recreate prometheus
+```
+
+Copy `docker-compose.optiplex.yml` to the OptiPlex or use it from a checkout of
+this repository there. From the directory containing the file, run:
+
+```bash
+sudo docker compose -f docker-compose.optiplex.yml up -d
+```
+
+The OptiPlex publishes cAdvisor on its Tailscale address `100.75.212.97:9280`.
+The media server's cAdvisor endpoint is on the Compose network. Both cAdvisor
+containers run privileged with access to host files and the Docker socket.
+
+In Grafana **Explore**, run `up{job="cadvisor"}` and look for `1` for both
+`media-server` and `optiplex`. In **Homelab Overview**, check that each host
+shows entries in the container memory ranking when selected individually.

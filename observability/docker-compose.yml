@@ -12,6 +12,8 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
       - ./grafana-datasource.yml:/etc/grafana/provisioning/datasources/prometheus.yml:ro
+      - ./grafana-dashboards.yml:/etc/grafana/provisioning/dashboards/homelab.yml:ro
+      - ./homelab-overview.json:/etc/grafana/dashboards/homelab-overview.json:ro
 
   prometheus:
     image: prom/prometheus:v3.16.0
@@ -32,6 +34,19 @@ services:
       - --web.listen-address=${NODE_EXPORTER_BIND_ADDRESS:-172.17.0.1}:9100
     volumes:
       - /:/host:ro,rslave
+
+  cadvisor:
+    image: ghcr.io/google/cadvisor:0.61.1
+    restart: unless-stopped
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /dev/disk:/dev/disk:ro
 
 volumes:
   grafana-data:
