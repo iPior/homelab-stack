@@ -1,6 +1,6 @@
-# Media Stack
+# Homelab Stack
 
-Docker Compose deployment configuration for a personal media server. Each directory
+Docker Compose deployment configuration for a personal homelab. Each directory
 is an independent Compose project; there is no root Compose file.
 
 | Directory | Services | Main interface |
@@ -12,6 +12,7 @@ is an independent Compose project; there is no root Compose file.
 | `portainer/` | Portainer Enterprise | 9443 |
 | `homepage/` | Homepage dashboard | 2999 |
 | `adguard/` | AdGuard Home DNS filtering | Tailscale setup: 3001; admin: 8081; DNS: 53 |
+| [`observability/`](observability/README.md) | Grafana, Prometheus, Node Exporter | Grafana: 3030 (localhost) |
 
 ## What Git preserves
 

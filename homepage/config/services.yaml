@@ -51,6 +51,10 @@
         icon: goaccess.svg
         href: "http://{{HOMEPAGE_VAR_SERVER_HOST}}:7880"
         description: Proxy access logs
+    - Grafana:
+        icon: grafana.svg
+        href: "https://grafana.pior.ca"
+        description: Server metrics and dashboards
     - Portainer:
         icon: portainer.svg
         href: "https://portainer.pior.ca"
