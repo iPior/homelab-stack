@@ -60,6 +60,7 @@
 !/observability/docker-compose.optiplex.yml
 !/observability/.env.example
 !/observability/README.md
+!/observability/TODO.md
 !/observability/prometheus.yml
 !/observability/grafana-datasource.yml
 !/observability/grafana-dashboards.yml

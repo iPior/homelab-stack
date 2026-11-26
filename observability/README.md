@@ -1,5 +1,7 @@
 # Observability
 
+See [planned work](TODO.md) for the remaining observability tasks.
+
 Grafana comes with Prometheus configured as its default data source. Prometheus
 collects metrics from itself, Grafana, Node Exporter, and cAdvisor. Node Exporter
 reports host CPU, memory, filesystem, and network metrics. cAdvisor reports
